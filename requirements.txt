@@ -1,0 +1,4 @@
+fastapi
+opentelemetry-instrumentation-fastapi
+opentelemetry-distro
+opentelemetry-exporter-gcp-trace
