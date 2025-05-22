@@ -4,7 +4,7 @@ from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 
 app = fastapi.FastAPI()
 
-@app.get("/foobar")
+@app.get("/")
 async def foobar():
     return {"message": "hello world"}
 
