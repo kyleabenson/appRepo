@@ -19,4 +19,4 @@ RUN python -m pip install -r requirements.txt
 
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
 # CMD ["python", "main.py"]
-CMD ["opentelemetry-instrument" , "--traces_exporter console",  "fastapi run app.py "]
+CMD ["opentelemetry-instrument" , "fastapi", "run", "app.py "]
