@@ -11,7 +11,7 @@ RUN opentelemetry-bootstrap -a install
 COPY . .
 EXPOSE 8000
 
-ENTRYPOINT [ "opentelemetry-instrument","--traces_exporter", "gcp_trace","--service_name", "my-service", "fastapi", "run", "app.py"]
+ENTRYPOINT [ "opentelemetry-instrument", "fastapi", "run", "app.py"]
 
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
 # CMD ["python", "main.py"]
