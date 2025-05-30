@@ -1,17 +1,10 @@
-FROM python:3.13-slim AS base
+FROM python:3.13-slim
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # get packages
 COPY . /app
 WORKDIR /app
-RUN pip install -r requirements.txt
+RUN uv sync --no-cache
 
-RUN opentelemetry-bootstrap -a install
+CMD [ "/app/.venv/bin/fastapi", "run", "main.py", "--port", "80", "--host", "0.0.0.0"]
 
-# Add the application
-COPY . .
-EXPOSE 8000
-
-ENTRYPOINT [ "opentelemetry-instrument", "fastapi", "run", "app.py"]
-
-# During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
-# CMD ["python", "main.py"]
