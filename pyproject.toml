@@ -1,0 +1,13 @@
+[project]
+name = "apprepo"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[standard]>=0.115.12",
+    "opentelemetry-distro>=0.54b1",
+    "opentelemetry-exporter-gcp-trace>=1.9.0",
+    "opentelemetry-exporter-otlp-proto-grpc>=1.33.1",
+    "opentelemetry-instrumentation-fastapi>=0.54b1",
+]
