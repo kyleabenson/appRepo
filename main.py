@@ -23,6 +23,7 @@ app = fastapi.FastAPI()
 
 @app.get("/")
 async def foobar():
+    time.sleep(2)
     roll_d6()
     return {"message": "hello world"}
 
