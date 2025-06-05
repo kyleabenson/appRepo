@@ -6,4 +6,4 @@ WORKDIR /locust
 ENV PATH=/root/.local/bin:$PATH
 
 RUN uv sync --frozen --no-cache
-CMD ["uvx", "locust", "-f", "locustfile.py", "--headless", "--users" ,"10", "--spawn-rate", "1"]
+CMD ["uvx", "locust", "-f", "locustfile.py", "--headless", "--users" ,"10", "--spawn-rate", "2"]
