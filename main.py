@@ -13,8 +13,9 @@ tracer = trace.get_tracer("diceroller.tracer")
 @tracer.start_as_current_span("roll_d6")
 def roll_d6():
   value = random.randint(1, 6)
+  logger.info(f"Rolled a {value}")
   if value == 6:
-    logging.warning("Sleeping for 4 seconds")
+    logger.warning("Sleeping for 4 seconds")
     #Even more sleeping to make it look like something is wrong!
     time.sleep(4)
     
@@ -29,4 +30,11 @@ async def foobar():
     roll_d6()
     return {"message": "hello world"}
 
+#Create an endpoint 'liveness-probe' that random gives a 500 error
+@app.get("/liveness-probe")
+async def liveness_probe():
+    if random.randint(1, 10) == 1:
+        return fastapi.responses.JSONResponse(status_code=500, content={"message": "Internal Server Error"})
+    return {"message": "OK"}
+    
 FastAPIInstrumentor.instrument_app(app)
