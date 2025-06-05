@@ -1,5 +1,0 @@
-fastapi[standard]
-opentelemetry-instrumentation-fastapi
-opentelemetry-distro
-opentelemetry-exporter-gcp-trace
-opentelemetry-exporter-otlp-proto-grpc
