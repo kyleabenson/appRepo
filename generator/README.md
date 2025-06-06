@@ -1,0 +1,2 @@
+A docker image with locust to query the backend API and generate telemetry. When running this, you must pass the host in as an environment variable -- on the docker CLI that might look like:
+docker run -e LOCUST_HOST="http://WEBSITE_EXAMPLE" locust-generator
