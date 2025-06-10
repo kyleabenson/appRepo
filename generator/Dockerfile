@@ -9,4 +9,6 @@ RUN uv sync --frozen --no-cache
 ENV PATH="/locust/.venv/bin:$PATH"
 #This variable must be overwridden at runtime to actually run against the backend instance
 ENV LOCUST_HOST=""
-CMD ["locust","-f", "locustfile.py", "--headless", "--users" ,"10", "--spawn-rate", "2"," --run-time", "45m" ]
+ENV LOCUST_RUN_TIME="45m"
+ENV LOCUST_USERS="10"
+CMD ["locust","-f", "locustfile.py", "--headless"]
