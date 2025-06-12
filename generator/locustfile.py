@@ -6,3 +6,7 @@ class SurgeUser(HttpUser):
     @task
     def surge_endpoint(self):
         self.client.get("/")
+
+    @task
+    def health_check(self):
+        self.client.get("/health")
