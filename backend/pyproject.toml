@@ -1,5 +1,5 @@
 [project]
-name = "apprepo"
+name = "apprepo-backend"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -10,4 +10,5 @@ dependencies = [
     "opentelemetry-exporter-gcp-trace>=1.9.0",
     "opentelemetry-exporter-otlp-proto-grpc>=1.33.1",
     "opentelemetry-instrumentation-fastapi>=0.54b1",
+    "sqlmodel>=0.0.19",
 ]

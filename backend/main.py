@@ -1,11 +1,12 @@
-import fastapi
-import time
-import random 
+from time import sleep
+import random
 import logging
+from fastapi import FastAPI, Response, status
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from opentelemetry import trace
-
-
+from sqlmodel import Session, select
+from .database import Song, engine, create_db_and_tables
+from contextlib import asynccontextmanager
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 # Acquire a tracer
@@ -14,27 +15,50 @@ tracer = trace.get_tracer("diceroller.tracer")
 def roll_d6():
   value = random.randint(1, 6)
   logger.info(f"Rolled a {value}")
-  if value == 6:
-    logger.warning("Sleeping for 4 seconds")
-    #Even more sleeping to make it look like something is wrong!
-    time.sleep(4)
+  match value:
+    case 6:
+        sleep(4)
+    case 1: 
+        sleep(2)
     
   return value
 
-app = fastapi.FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    create_db_and_tables()
+    yield
+    
+app = FastAPI(lifespan=lifespan)
+
 
 @app.get("/")
-async def foobar():
-    #We're just sleeping here to make the charts look a little more gantt like
-    time.sleep(2)
-    roll_d6()
-    return {"message": "hello world"}
+def root():
+    return "Welcome to Now Playing!"
 
-#Create an endpoint 'liveness-probe' that random gives a 500 error
-@app.get("/liveness-probe")
-async def liveness_probe():
-    if random.randint(1, 10) == 1:
-        return fastapi.responses.JSONResponse(status_code=500, content={"message": "Internal Server Error"})
-    return {"message": "OK"}
-    
+@app.post("/nowplaying")
+def now_playing(song: Song):
+    with Session(engine) as session:
+        session.add(song)
+        session.commit()
+        session.refresh(song)
+        return song
+
+@app.get("/users/{user_id}/songs")
+def get_songs_by_user(user_id: int):
+    with Session(engine) as session:
+        statement = select(Song).where(Song.user_id == user_id)
+        results = session.exec(statement).all()
+        return results
+
+@app.get("/health", status_code=200)
+def health(response: Response):
+    roll = roll_d6()
+    match roll:
+        case 6:
+            logger.info(f"Rolled a {roll}")
+            response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+            return {"message": "Internal Server Error"}
+        case 1:
+            response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+            return {"message": "Service Unavailable"}
 FastAPIInstrumentor.instrument_app(app)

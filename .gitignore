@@ -1,2 +1,4 @@
 *.pyc
 __pycache__
+backend/database.db
+*/.venv
