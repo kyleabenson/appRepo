@@ -2,3 +2,5 @@
 __pycache__
 backend/database.db
 */.venv
+*/.gemini
+.gemini
