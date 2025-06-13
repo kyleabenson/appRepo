@@ -29,6 +29,15 @@ st.markdown("""
         color: #333;
     }
 
+    /* Sidebar styling */
+    [data-testid="stSidebar"] * {
+        color: #39542C !important; /* Green color for all text in the sidebar */
+    }
+
+    [data-testid="stSidebar"] h1 {
+        color: #EFBF04 !important; /* Yellow color for the title */
+    }
+
     /* Main container */
     .main .block-container {
         padding-top: 2rem;
@@ -76,6 +85,7 @@ with st.form(key="now_playing_form"):
     song_name = st.text_input("Song Name")
     artist_name = st.text_input("Artist")
     song_url = st.text_input("URL to the Song")
+
     submit_button = st.form_submit_button(label="Share")
 
     if submit_button:
@@ -83,10 +93,12 @@ with st.form(key="now_playing_form"):
             timestamp = datetime.utcnow().isoformat()
             backend_url = "http://localhost:8000/nowplaying"
             payload = {
-                "song_name": song_name,
-                "artist_name": artist_name,
-                "song_url": song_url,
+                "name": song_name,
+                "artist": artist_name,
+                "url": song_url,
                 "timestamp": timestamp,
+                "id": 450,
+                "user_id": 20,
             }
 
             try:
