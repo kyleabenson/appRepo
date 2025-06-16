@@ -11,4 +11,4 @@ ENV PATH="/locust/.venv/bin:$PATH"
 ENV LOCUST_HOST=""
 ENV LOCUST_RUN_TIME="45m"
 ENV LOCUST_USERS="10"
-CMD ["locust","-f", "locustfile.py", "--headless"]
+CMD ["locust","-f", "locustfile.py", "--headless", "--exit-code-on-error" ," 0"]
