@@ -1,12 +1,18 @@
 import streamlit as st
 import requests
 from datetime import datetime
+import os
 
 # --- Page Configuration ---
 st.set_page_config(
     page_title="Now Playing",
     layout="centered",  # Use centered layout for a cleaner look
 )
+
+# --- Backend URL ---
+BACKEND_URL = os.environ.get("BACKEND_URL")
+
+
 
 # --- Initialize session state ---
 if 'logged_in' not in st.session_state:
@@ -101,7 +107,7 @@ def show_login_form():
 
         if submit_button:
             try:
-                response = requests.post("https://backend-service-672595200204.us-central1.run.app/login", data={"username": username, "password": password})
+                response = requests.post(f"{BACKEND_URL}/login", data={"username": username, "password": password})
                 if response.status_code == 200:
                     st.session_state.logged_in = True
                     user_data = response.json()
@@ -122,7 +128,7 @@ def show_registration_form():
 
         if submit_button:
             try:
-                response = requests.post("https://backend-service-672595200204.us-central1.run.app/register", json={"username": username, "password": password})
+                response = requests.post(f"{BACKEND_URL}/register", json={"username": username, "password": password})
                 if response.status_code == 200:
                     st.success("Registration successful! Please log in.")
                 else:
@@ -149,7 +155,7 @@ else:
         if submit_button:
             if song_name and artist_name and song_url:
                 timestamp = datetime.utcnow().isoformat()
-                backend_url = "https://backend-service-672595200204.us-central1.run.app/nowplaying"
+                backend_url = f"{BACKEND_URL}/nowplaying"
                 payload = {
                     "name": song_name,
                     "artist": artist_name,
